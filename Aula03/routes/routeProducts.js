@@ -33,7 +33,7 @@ router.put('/:id', (req, res) => {
     const product = { id, name, price, quantity, colors };
     products[productIndex] = product;
 
-    res.status(200).json(products);
+    return res.status(200).json(products);
 })
 
 router.delete('/:id', (req, res) => {
@@ -45,7 +45,7 @@ router.delete('/:id', (req, res) => {
 
     products.splice(productIndex, 1);
 
-    res.status(200).send();
+    return res.status(200).send();
 })
 
 module.exports = router;
