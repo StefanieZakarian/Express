@@ -10,9 +10,9 @@ router.get('/', (req, res) => {
 router.get('/:id', (req, res) => {
     const id = Number(req.params.id);
 
-    const product = products.filter((item) => item.id === id);
+    const product = products.find((item) => item.id === id);
 
-    if (product.length > 0) return res.status(200).json(product);
+    if (product) return res.status(200).json(product);
     return res.status(404).json({ error: 'Product not found.'});
 });
 
