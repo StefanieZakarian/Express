@@ -1,7 +1,7 @@
-const express = require("express");
+const { Router } = require("express");
 let products = require("../products");
 
-const routes = express.Router();
+const routes = Router();
 
 routes.get('/', (req, res) => {
     return res.status(200).json(products);
@@ -16,14 +16,19 @@ routes.get('/:id', (req, res) => {
     return res.status(404).json({ error: 'Product not found.'});
 });
 
-routes.post("/", (req, res) => {
+routes.post('/', (req, res) => {
     const body = req.body;
 
-    if (!body) return res.status(400).send("Add the product correctly!");
+    let lastId = products[products.length -1].id + 1;
 
-    products = [...products, body]
+    let newProducts = body.map((item) => ({
+        id: lastId++,
+        ...item
+    }));
 
-    return res.status(200).json(products);
+    products = [...products, ...newProducts];
+
+    res.status(200).json(products);
 })
 
 routes.put('/:id', (req, res) => {
