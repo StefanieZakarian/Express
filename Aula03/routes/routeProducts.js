@@ -1,13 +1,13 @@
-const { Router } = require('express');
-let products = require('../products');
+const express = require("express");
+let products = require("../products");
 
-const router = Router();
+const routes = express.Router();
 
-router.get('/', (req, res) => {
+routes.get('/', (req, res) => {
     return res.status(200).json(products);
 });
 
-router.get('/:id', (req, res) => {
+routes.get('/:id', (req, res) => {
     const id = Number(req.params.id);
 
     const product = products.find((item) => item.id === id);
@@ -16,13 +16,17 @@ router.get('/:id', (req, res) => {
     return res.status(404).json({ error: 'Product not found.'});
 });
 
-router.post('/', (req, res) => {
+routes.post("/", (req, res) => {
     const body = req.body;
-    const newProducts = [...products, body]
-    return res.status(200).json(newProducts);
+
+    if (!body) return res.status(400).send("Add the product correctly!");
+
+    products = [...products, body]
+
+    return res.status(200).json(products);
 })
 
-router.put('/:id', (req, res) => {
+routes.put('/:id', (req, res) => {
     const id = Number(req.params.id);
     const { name, price, quantity, colors } = req.body;
 
@@ -36,7 +40,7 @@ router.put('/:id', (req, res) => {
     return res.status(200).json(products);
 })
 
-router.delete('/:id', (req, res) => {
+routes.delete('/:id', (req, res) => {
     const id = Number(req.params.id);
 
     const productIndex = products.findIndex((item) => item.id === id);
@@ -48,4 +52,4 @@ router.delete('/:id', (req, res) => {
     return res.status(200).send();
 })
 
-module.exports = router;
+module.exports = routes;
